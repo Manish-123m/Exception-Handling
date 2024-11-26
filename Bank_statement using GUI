@@ -1,0 +1,165 @@
+import tkinter as tk
+from tkinter import messagebox  # Ensure messagebox is imported correctly
+import random
+
+class Account_Statement:
+    def __init__(self, account_holder_name, account_number, balance):
+        self.account_number = account_number
+        self.account_holder_name = account_holder_name
+        self.balance = balance
+
+    def Deposit(self, amount):
+        self.balance += amount
+        return f"After Deposit: {self.balance} and deposit amount: {amount}"
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            return f"After Withdrawal: {self.balance} and withdrawal amount: {amount}"
+        else:
+            return f"Insufficient Balance: {self.balance}"
+
+    def display_balance(self):
+        return f"Balance: {self.balance}"
+
+# Function to handle deposit action
+def handle_deposit():
+    try:
+        # Get values from input fields
+        account_holder_name = entry_holder_name.get()
+        account_number = int(entry_account_number.get())
+        balance = float(entry_balance.get())
+        
+        # Create an Account_Statement object
+        account = Account_Statement(account_holder_name, account_number, balance)
+        
+        # Get deposit amount
+        deposit_amount = float(entry_deposit_amount.get())
+
+        # Perform Deposit action
+        deposit_message = account.Deposit(deposit_amount)
+        
+        # Update the result label
+        result_label.config(text=f"{deposit_message}\n{account.display_balance()}")
+        account_number_label.config(text=f"Account Number: {account.account_number}")
+        account_holder_label.config(text=f"Account Holder: {account.account_holder_name}")
+
+    except ValueError:
+        messagebox.showerror("Invalid input", "Please enter valid numbers for amounts and account number.")  # Show error message if invalid input
+
+# Function to handle withdrawal action
+def handle_withdraw():
+    try:
+        # Get values from input fields
+        account_holder_name = entry_holder_name.get()
+        account_number = int(entry_account_number.get())
+        balance = float(entry_balance.get())
+        
+        # Create an Account_Statement object
+        account = Account_Statement(account_holder_name, account_number, balance)
+        
+        # Get withdrawal amount
+        withdraw_amount = float(entry_withdraw_amount.get())
+
+        # Perform Withdraw action
+        withdraw_message = account.withdraw(withdraw_amount)
+        
+        # Update the result label
+        result_label.config(text=f"{withdraw_message}\n{account.display_balance()}")
+        account_number_label.config(text=f"Account Number: {account.account_number}")
+        account_holder_label.config(text=f"Account Holder: {account.account_holder_name}")
+
+    except ValueError:
+        messagebox.showerror("Invalid input", "Please enter valid numbers for amounts and account number.")  # Show error message if invalid input
+
+# Function to reset all fields and results (Refresh)
+def refresh():
+    # Clear all input fields
+    entry_holder_name.delete(0, tk.END)
+    entry_account_number.delete(0, tk.END)
+    entry_balance.delete(0, tk.END)
+    entry_deposit_amount.delete(0, tk.END)
+    entry_withdraw_amount.delete(0, tk.END)
+
+    # Reset the result labels
+    result_label.config(text="Results will be displayed here.")
+    account_number_label.config(text="Account Number:")
+    account_holder_label.config(text="Account Holder:")
+
+# Function to animate the background color
+def change_background_color():
+    # Randomly pick a color for the background
+    color = random.choice(["#ff9999", "#99ff99", "#9999ff", "#ffccff", "#ffff99", "#ff6666", "#66ff66", "#66ccff", "#cc66ff"])
+    
+    # Change the background color of the main window
+    root.config(bg=color)
+    
+    # Call the change_background_color function again after 1000 ms (1 second)
+    root.after(1000, change_background_color)
+
+# Create the main Tkinter window
+root = tk.Tk()
+root.title("Bank Account Statement")
+
+# Set window size
+root.geometry("600x500")
+
+# Set a background color (optional background image can also be added)
+root.config(bg="#f0f0f0")
+
+# Start the moving background color effect
+change_background_color()
+
+# Add labels and input fields for user information
+label_title = tk.Label(root, text="Account Information", font=("Helvetica", 16, "bold"), bg="#f0f0f0")
+label_title.pack(pady=10)
+
+label_holder_name = tk.Label(root, text="Enter Account Holder Name:", bg="#f0f0f0")
+label_holder_name.pack(pady=5)
+entry_holder_name = tk.Entry(root, font=("Helvetica", 14))
+entry_holder_name.pack(pady=5)
+
+label_account_number = tk.Label(root, text="Enter Account Number:", bg="#f0f0f0")
+label_account_number.pack(pady=5)
+entry_account_number = tk.Entry(root, font=("Helvetica", 14))
+entry_account_number.pack(pady=5)
+
+label_balance = tk.Label(root, text="Enter Initial Balance:", bg="#f0f0f0")
+label_balance.pack(pady=5)
+entry_balance = tk.Entry(root, font=("Helvetica", 14))
+entry_balance.pack(pady=5)
+
+# Deposit and Withdraw fields
+label_deposit_amount = tk.Label(root, text="Enter Deposit Amount:", bg="#f0f0f0")
+label_deposit_amount.pack(pady=5)
+entry_deposit_amount = tk.Entry(root, font=("Helvetica", 14))
+entry_deposit_amount.pack(pady=5)
+
+label_withdraw_amount = tk.Label(root, text="Enter Withdrawal Amount:", bg="#f0f0f0")
+label_withdraw_amount.pack(pady=5)
+entry_withdraw_amount = tk.Entry(root, font=("Helvetica", 14))
+entry_withdraw_amount.pack(pady=5)
+
+# Buttons for performing actions (Deposit and Withdraw)
+deposit_button = tk.Button(root, text="Deposit", font=("Helvetica", 14), command=handle_deposit)
+deposit_button.pack(pady=10)
+
+withdraw_button = tk.Button(root, text="Withdraw", font=("Helvetica", 14), command=handle_withdraw)
+withdraw_button.pack(pady=10)
+
+# Refresh Button
+refresh_button = tk.Button(root, text="Refresh", font=("Helvetica", 14), command=refresh)
+refresh_button.pack(pady=5)
+
+# Result labels to display information
+result_label = tk.Label(root, text="Results will be displayed here.", font=("Helvetica", 12), bg="#f0f0f0")
+result_label.pack(pady=20)
+
+account_number_label = tk.Label(root, text="Account Number:", font=("Helvetica", 12), bg="#f0f0f0")
+account_number_label.pack(pady=5)
+
+account_holder_label = tk.Label(root, text="Account Holder:", font=("Helvetica", 12), bg="#f0f0f0")
+account_holder_label.pack(pady=5)
+
+# Start the Tkinter event loop
+root.mainloop()
