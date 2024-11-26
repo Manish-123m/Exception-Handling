@@ -1,0 +1,5 @@
+In Python, Input and Output (I/O)
+ operations refer to reading data from and 
+writing data to various sources, such as files, 
+the console, or other devices. 
+Here's a breakdown of different types of I/O operations and some examples for practice.
